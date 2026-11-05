@@ -1,20 +1,29 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; // SE IMPORTA LA LIBRERIA PARA PINTAR ELEMENTOS EN PANTALLA (BOTONES, TEXTOS, COLORES, ETC.)
 
-import 'screens/bienvenida_screen.dart';
+import 'screens/bienvenida_screen.dart'; // SE IMPORTA LA PANTALLA INICIAL DE BIENVENIDA
 
+// FUNCION DEL PUNTO DE ENTRADA, SE EJECUTA AL INICIALIZAR LA APP
 void main() {
-  runApp(const TareasApp());
+  runApp(const TareasApp()); // CREA UNA INSTANCIA DE LA CLASE PRINCIPAL
 }
 
+// SE CREA UN WIDGET PERSONALIZADO QUE HEREDA DE STATELESSWIDGET
+// STATELESSWIDGET ES UN WIDGET CUYO ESTADO INTERNO NO CAMBIA A LO LARGO DEL TIEMPO, NO GUARDA DATOS
 class TareasApp extends StatelessWidget {
-  const TareasApp({super.key});
+  // CONSTRUCTOR ESTANDAR DE LOS WIDGETS EN FLUTTER
+  const TareasApp({super.key}); // LA KEY SIRVE PARA IDENTIFICAR A ESE WIDGET DENTRO DEL ARBOL DE COMPONENTES
 
+  // INDICA QUE ESTAREMOS SOBREESCRIBIENDO EL METODO BUIL QUE SE HEREDO
   @override
+  // SE DEFINE EL METODO QUE SE EJECUTARA CADA VEZ QUE SE QUIERA MOSTRAR ESTE WIDGET
+  // CONTEXT INDICA LA UBICACION EXACTA DEL WIDGET DENTRO DEL ARBOL DE LA APP
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Tareas',
-      theme: ThemeData(colorSchemeSeed: Colors.deepPurple),
-      home: const BienvenidaScreen(),
+      title: 'Tareas', // DEFINE EL TITULO DE LA APP
+      theme: ThemeData(
+        colorSchemeSeed: const Color.fromARGB(255, 233, 115, 172),
+      ), // SE DEFINE UNA PALETA DE COLORES PARA TODA LA APP
+      home: const BienvenidaScreen(), // SE ESTABLECE COMO PANTALLA INICIAL AL WIDGET DE BIENVENIDA
     );
   }
 }
