@@ -1,19 +1,25 @@
-import 'dart:convert';
+import 'dart:convert'; // SE IMPORTA LA LIBRERIA PARA CONVERTIR DATOS
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // SE ENCARGA DE LEER Y ESCRIBIR EN EL ALMACENAMIENTO LOCAL
 
-import '../models/tarea.dart';
+import '../models/tarea.dart'; // SE IMPORTA LA CLASE DEL ARCHIVO DENTRO DE MODELS
 
+// FUNCION PARA CARGAR LAS TAREAS
+// FUTURE INDICA QUE ES UNA PROMESA Y ASYNC QUE ES ASINCRONA, DEVOLVERA UNA LISTA CON LOS OBJETOS DE LA CLASE TAREA
 Future<List<Tarea>> cargarTareas() async {
-  final prefs = await SharedPreferences.getInstance();
-  final texto = prefs.getString('tareas');
-  if (texto == null) return [];
-  final lista = jsonDecode(texto) as List;
-  return lista.map((e) => Tarea.fromJson(e)).toList();
+  final prefs = await SharedPreferences.getInstance(); // OBTIENE ACCESO A LA MEMORIA LOCAL DEL DISPOSITIVO
+  final texto = prefs.getString('tareas'); // SE ACCEDE A LA MEMORIA CON LA LLAVE PREFS Y BUSCA EL DATO LLAMADO "TAREAS", DEVOLVIENDO UN JSON O NULL
+  if (texto == null) return []; // SI ES NUL DEVUELVE UNA LISTA VACIA
+  final lista = jsonDecode(
+    texto,
+  ) as List; // CONVIERTE EL TEXTO JSON A UNA LISTA DE MAPAS (DICCIONARIOS)
+  return lista.map((e) => Tarea.fromJson(e)).toList(); // SE RECORRE ESA LISTA DE MAPAS Y LO CONVIERTE EN UN OBJETO A TRAVES DE LA CLASE Y AL FINAL METE TODOS LOS OBJETOS A UNA LISTA
 }
 
+// FUNCION PARA GUARDAR LAS TAREAS
+// FUNCION QUE NO DEVOLVERA NADA (VOID), RECIBE COMO PARAMETRO LA LISTA DE TAREAS
 Future<void> guardarTareas(List<Tarea> tareas) async {
-  final prefs = await SharedPreferences.getInstance();
-  final texto = jsonEncode(tareas.map((t) => t.toJson()).toList());
-  await prefs.setString('tareas', texto);
+  final prefs = await SharedPreferences.getInstance(); // NUEVAMENTE OBTENEMOS LA INSTANCIA DE SHAREDPREFERENCES
+  final texto = jsonEncode(tareas.map((t) => t.toJson()).toList()); // RECORRE LA LISTA DE TAREAS Y CONVIERTE CADA OBJETO EN UN MAPA DE TEXTO Y LUEGO LO CONVIERTE EN UNA LISTA
+  await prefs.setString('tareas', texto); // GUARDA ESE GRAN TEXTO EN LA MEMORIA DEL DISPOSITIVO BAJO LA LLAVE "TAREAS"
 }
