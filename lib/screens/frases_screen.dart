@@ -5,13 +5,18 @@ import 'package:flutter/material.dart'; // SE IMPORTA PARA ACCEDER A COMPONENTES
 // SE CREA UN WIDGET PERSONALIZADO QUE HEREDA DE STATEFULWIDGET
 // STATEFULWIDGET ES UN WIDGET CON ESTADO, ES DECIR, EL ESTADO SI PUEDE CAMBIAR
 class FrasesScreen extends StatefulWidget {
-  const FrasesScreen({super.key});
+  const FrasesScreen({super.key}); // KEY PARA IDENTIFICAR AL WIDGET EN EL ARBOL
 
+  // ANOTACION PARA INDICAR QUE SE SOBREESCRIBE UN METODO DE LA CLASE PADRE
   @override
-  State<FrasesScreen> createState() => _FrasesScreenState();
+  // INDICA QUE LA FUNCION DEVOLVERA UN DATO TIPO STATE (ADMIN DE ESTADO) Y QUE ESTA LIGADO A NUESTRA PANTALLA
+  // FLUTTER BUSCA Y EJECUTA ESTA FUNCION APENAS MUESTRA LA PANTALLA PARA SABER QUIEN GESTIONARA EL ESTADO DE LA PANTALLA
+  State<FrasesScreen> createState() => _FrasesScreenState(); // CREA Y DEVUELVE UNA INSTANCIA DE LA CLASE PRIVADA
 }
 
+// SE CREA LA CLAVE PIVADA, SE HEREDA STATE E INDICA QUE ESTO ESTA LIGADO A ESTA PANTALLA
 class _FrasesScreenState extends State<FrasesScreen> {
+  // SE ASIGNA UNA LISTA DE STRINGS LLAMADA FRASES
   final List<String> frases = [
     'Hoy es un buen día para empezar.',
     'Un pequeño paso hoy vale más que un gran plan mañana.',
@@ -25,25 +30,36 @@ class _FrasesScreenState extends State<FrasesScreen> {
     'Hoy vas a sorprenderte de lo que eres capaz.',
   ];
 
-  late String frase;
+  late String frase; // SE CREA LA VARIABLE FRASE SIN VALOR INICIALMENTE
 
+  // ANOTACION PARA INDICAR QUE SE SOBREESCRIBE UN METODO DE LA CLASE PADRE
   @override
+  // DEFINE EL ESTADO INICIAL DE LA PAGINA, SE EJECUTA UNA VEZ CUANDO SE MONTA LA PANTALLA POR PRIMERA VEZ
   void initState() {
-    super.initState();
-    frase = nuevaFrase();
+    super.initState(); // SE LLAMA AL METODO ORIGINAL DE FLUTTER
+    frase = nuevaFrase(); // LE ASIGNA UNA FRASE RANDOM A LA VARIABLE LLAMANDO A LA FUNCION
   }
 
+  // METODO PARA ASIGNAR UNA FRASE DE FORMA RANDOM
   String nuevaFrase() {
-    return frases[Random().nextInt(frases.length)];
+    // ASIGNA UNA FRASE DE FORMA RANDOM
+    return frases[Random().nextInt(
+      frases.length,
+    )]; // GENERA UN NUMERO ALEATORIO ENTRE 0 Y LENGTH DE LA LISTA
   }
 
+  // METODO PARA REFRESCAR LA FRASE
   void refrescar() {
+    // CAMBIA DE ESTADO PARA MOSTRARLO EN PANTALLA
     setState(() {
-      frase = nuevaFrase();
+      frase = nuevaFrase(); // SE ASIGNA OTRA FRASE RANDOM
     });
   }
 
+  // ANOTACION PARA INDICAR QUE SE SOBREESCRIBE UN METODO DE LA CLASE PADRE
   @override
+  // SE DEFINE EL METODO QUE SE EJECUTARA CADA VEZ QUE SE QUIERA MOSTRAR ESTE WIDGET
+  // CONTEXT INDICA LA UBICACION EXACTA DEL WIDGET DENTRO DEL ARBOL DE LA APP
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Inspiración diaria')),
