@@ -1,3 +1,5 @@
+import 'dart:math'; // SE IMPORTA LA LIBRERIA PARA USAR RANDOM
+
 import 'package:flutter/material.dart'; // SE IMPORTA PARA ACCEDER A COMPONENTES VISUALES
 
 import 'lista_tareas_screen.dart'; // SE IMPORTA VISTA PARA REDIRIGIR
@@ -5,10 +7,38 @@ import 'frases_screen.dart'; // SE IMPORTA VISTA VISTA PARA REDIRIGIR
 
 // SE CREA UN WIDGET PERSONALIZADO QUE HEREDA DE STATELESSWIDGET
 // STATELESSWIDGET ES UN WIDGET CUYO ESTADO INTERNO NO CAMBIA A LO LARGO DEL TIEMPO, NO GUARDA DATOS
-class BienvenidaScreen extends StatelessWidget {
-  const BienvenidaScreen({super.key}); // LA KEY SIRVE PARA IDENTIFICAR A ESE WIDGET DENTRO DEL ARBOL DE COMPONENTES
+class BienvenidaScreen extends StatefulWidget {
+  final List? frasesFav;
 
-  // INDICA QUE ESTAREMOS SOBREESCRIBIENDO EL METODO BUIL QUE SE HEREDO
+  const BienvenidaScreen({super.key, this.frasesFav});
+
+  @override
+  State<BienvenidaScreen> createState() => _BienvenidaScreenState();
+}
+
+class _BienvenidaScreenState extends State<BienvenidaScreen> {
+  late String frase;
+
+  @override
+  // DEFINE EL ESTADO INICIAL DE LA PAGINA, SE EJECUTA UNA VEZ CUANDO SE MONTA LA PANTALLA POR PRIMERA VEZ
+  void initState() {
+    super.initState(); // SE LLAMA AL METODO ORIGINAL DE FLUTTER
+    frase = mostrarFraseFav(); // LE ASIGNA UNA FRASE RANDOM A LA VARIABLE LLAMANDO A LA FUNCION
+  }
+
+  // METODO PARA ASIGNAR UNA FRASE DE FORMA RANDOM
+  String mostrarFraseFav() {
+    // ASIGNA UNA FRASE DE FORMA RANDOM
+    if (widget.frasesFav != null) {
+      return widget.frasesFav![Random().nextInt(
+        widget.frasesFav?.length ?? 0,
+      )]; // GENERA UN NUMERO ALEATORIO ENTRE 0 Y LENGTH DE LA LISTA
+    } else {
+      return ('Qué alegría verte por aquí. Juntos vamos a conquistar el día.');
+    }
+  }
+
+  // LA KEY SIRVE PARA IDENTIFICAR A ESE WIDGET DENTRO DEL ARBOL DE COMPONENTES
   @override
   // SE DEFINE EL METODO QUE SE EJECUTARA CADA VEZ QUE SE QUIERA MOSTRAR ESTE WIDGET
   // CONTEXT INDICA LA UBICACION EXACTA DEL WIDGET DENTRO DEL ARBOL DE LA APP
@@ -30,8 +60,8 @@ class BienvenidaScreen extends StatelessWidget {
             children: [
               const Text('¡Hola!', style: TextStyle(fontSize: 40)),
               const SizedBox(height: 16), // CAJA VACIA PARA SEPARAR TEXTOS
-              const Text(
-                'Qué alegría verte por aquí. Juntos vamos a conquistar el día.',
+              Text(
+                mostrarFraseFav(),
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18),
               ),
