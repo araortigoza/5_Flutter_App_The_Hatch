@@ -19,6 +19,10 @@ class ListaTareasScreen extends StatefulWidget {
 // CLASE PRIVADA QUE CONTENDRA EL ESTADO DE LA PANTALLA
 class _ListaTareasScreenState extends State<ListaTareasScreen> {
   List<Tarea> tareas = []; // SE DEFINE UNA LISTA DE LOS OBJETOS TAREA
+  // tareas = [
+  //            {titulo: "Estudiar flutter", descripcion: '', fecha: 13/11/2026, completada = true}
+  //            {titulo: "Practicar", descripcion: '', fecha: 13/11/2026, completada = true}
+  //          ]
 
   // POLIMORFISMO
   @override
