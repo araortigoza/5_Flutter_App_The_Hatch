@@ -7,6 +7,12 @@ import 'formulario_tarea_screen.dart'; // SE IMPORTA LA PANTALLA DE FORMULARIO P
 // STATELESSWIDGET ES UN WIDGET CUYO ESTADO INTERNO NO CAMBIA A LO LARGO DEL TIEMPO, NO GUARDA DATOS
 class DetalleTareaScreen extends StatelessWidget {
   final Tarea tarea; // ASIGNA LA TAREA RECIBIDA
+  // Tarea({
+  //          titulo: "Estudiar flutter",
+  //          descripcion: '',
+  //          fecha: 13/11/2026 ,
+  //          completada = true
+  //      })
 
   const DetalleTareaScreen({super.key, required this.tarea}); // KEY PARA IDENTIFICAR AL WIDGET EN EL ARBOL Y LA TAREA ESPECIFICA MOSTRAR
 
