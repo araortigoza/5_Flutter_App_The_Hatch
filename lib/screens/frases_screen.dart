@@ -1,6 +1,7 @@
 import 'dart:math'; // SE IMPORTA LA LIBRERIA PARA USAR RANDOM
 
-import 'package:flutter/material.dart'; // SE IMPORTA PARA ACCEDER A COMPONENTES VISUALES
+import 'package:flutter/material.dart';
+import 'package:tareas_app/screens/bienvenida_screen.dart'; // SE IMPORTA PARA ACCEDER A COMPONENTES VISUALES
 
 // SE CREA UN WIDGET PERSONALIZADO QUE HEREDA DE STATEFULWIDGET
 // STATEFULWIDGET ES UN WIDGET CON ESTADO, ES DECIR, EL ESTADO SI PUEDE CAMBIAR
@@ -31,6 +32,7 @@ class _FrasesScreenState extends State<FrasesScreen> {
   ];
 
   late String frase; // SE CREA LA VARIABLE FRASE SIN VALOR INICIALMENTE
+  List frasesFav = [];
 
   // ANOTACION PARA INDICAR QUE SE SOBREESCRIBE UN METODO DE LA CLASE PADRE
   @override
@@ -56,13 +58,35 @@ class _FrasesScreenState extends State<FrasesScreen> {
     });
   }
 
+  void agregarFraseFav() {
+    setState(() {
+      frasesFav.add(frase);
+    });
+  }
+
   // ANOTACION PARA INDICAR QUE SE SOBREESCRIBE UN METODO DE LA CLASE PADRE
   @override
   // SE DEFINE EL METODO QUE SE EJECUTARA CADA VEZ QUE SE QUIERA MOSTRAR ESTE WIDGET
   // CONTEXT INDICA LA UBICACION EXACTA DEL WIDGET DENTRO DEL ARBOL DE LA APP
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Inspiración diaria')),
+      appBar: AppBar(
+        title: const Text('Inspiración diaria'),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              agregarFraseFav();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BienvenidaScreen(frasesFav: frasesFav),
+                ),
+              );
+            },
+            child: const Text('Fav'),
+          ),
+        ],
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
