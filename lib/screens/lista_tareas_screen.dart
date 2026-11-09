@@ -129,6 +129,12 @@ class _ListaTareasScreenState extends State<ListaTareasScreen> {
       }
       return true;
     }).toList();
+
+    tareasFiltradas.sort((a, b) {
+      if (a.completada == b.completada) return 0;
+      return a.completada ? 1 : -1;
+    });
+
     return Scaffold(
       appBar: AppBar(title: const Text('Lista de tareas')),
       body: tareas.isEmpty
