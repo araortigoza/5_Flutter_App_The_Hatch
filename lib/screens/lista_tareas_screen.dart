@@ -107,41 +107,83 @@ class _ListaTareasScreenState extends State<ListaTareasScreen> {
     ); // LLAMA A LA FUNCION PARA GUARDAR LAS TAREAS EN MEMORIA
   }
 
+  void cambiarFiltro(String nuevoFiltro) {
+    setState(() {
+      _filtroActual = nuevoFiltro;
+    });
+  }
+
+  String _filtroActual = 'todas';
+
   @override
   Widget build(BuildContext context) {
+    List<Tarea> tareasFiltradas = tareas.where((tarea) {
+      if (_filtroActual == 'pendientes') {
+        return !tarea.completada;
+      } else if (_filtroActual == 'completadas') {
+        return tarea.completada;
+      }
+      return true;
+    }).toList();
     return Scaffold(
       appBar: AppBar(title: const Text('Lista de tareas')),
       body: tareas.isEmpty
           ? const Center(child: Text('No tienes tareas todavía'))
-          : ListView.builder(
-              itemCount: tareas.length,
-              itemBuilder: (context, index) {
-                final tarea = tareas[index];
-                return ListTile(
-                  leading: Checkbox(
-                    value: tarea.completada,
-                    onChanged: (valor) => cambiarEstado(index, valor),
-                  ),
-                  title: Text(
-                    tarea.titulo,
-                    style: TextStyle(
-                      decoration: tarea.completada
-                          ? TextDecoration.lineThrough
-                          : null,
+          : Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => cambiarFiltro('todas'),
+                      child: const Text('Todas'),
                     ),
+                    const SizedBox(width: 8),
+                    ElevatedButton(
+                      onPressed: () => cambiarFiltro('pendientes'),
+                      child: const Text('Pendientes'),
+                    ),
+                    const SizedBox(width: 8),
+                    ElevatedButton(
+                      onPressed: () => cambiarFiltro('completadas'),
+                      child: const Text('Completadas'),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: tareasFiltradas.length,
+                    itemBuilder: (context, index) {
+                      final tarea = tareasFiltradas[index];
+                      return ListTile(
+                        leading: Checkbox(
+                          value: tarea.completada,
+                          onChanged: (valor) => cambiarEstado(index, valor),
+                        ),
+                        title: Text(
+                          tarea.titulo,
+                          style: TextStyle(
+                            backgroundColor: tarea.completada
+                                ? const Color(0xFFE8F5E9)
+                                : null,
+                            decoration: tarea.completada
+                                ? TextDecoration.lineThrough
+                                : null,
+                          ),
+                        ),
+                        subtitle: Text(
+                          '${tarea.fecha.day}/${tarea.fecha.month}/${tarea.fecha.year}',
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () => eliminar(index),
+                        ),
+                        onTap: () => abrirDetalle(index),
+                      );
+                    },
                   ),
-                  subtitle: Text(
-                    '${tarea.fecha.day}/${tarea.fecha.month}/${tarea.fecha.year}',
-                  ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () => eliminar(index),
-                  ),
-                  onTap: () => abrirDetalle(
-                    index,
-                  ), // LO QUE PASA SI EL USUARIO TOCA TODX EL RENGLON
-                );
-              },
+                ),
+              ],
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: agregar,
